@@ -14,8 +14,16 @@ _________________
 
 **streamdeck-linux-gui** A Linux compatible UI for the Elgato Stream Deck.
 
-This project is a fork and drop-in replacement for [streamdeck_ui](https://github.com/timothycrosley/streamdeck-ui), which is no longer maintained.
-This still keeps the original code and intends to pick up where the original left off.
+This project is a fork and drop-in replacement for [streamdeck_ui](https://github.com/timothycrosley/streamdeck-ui), which was abandoned after its original owner disappeared.
+
+> [!WARNING]
+> THIS PROJECT IS IN MAINTENANCE MODE ONLY!
+> Pull requests for critical bug fixes, dependency updates or documentation are accepted to keep the application functional; however, no new features will be accepted.
+> Further information on this decision is available on [GitHub Discussions](https://github.com/streamdeck-linux-gui/streamdeck-linux-gui/discussions/203).
+>
+> We recommend that you search for an alternative application. In particular, we recommend:
+> - [StreamController](https://github.com/StreamController/StreamController): "An elegant Linux app for the Elgato Stream Deck with support for plugins"
+> - [OpenDeck](https://github.com/nekename/OpenDeck): "Linux software for the Stream Deck with support for original Elgato Stream Deck plugins"
 
 All credit to the orignal authors, and the many contributors to the project.
 
@@ -93,7 +101,7 @@ If you need any help, have a question, or just want to discuss something related
 ## Known issues
 
 * pip package is not yet available for the current state of the project. Please install from source, currently trying to find a better way to provide the package.
-* Streamdeck uses [pynput](https://github.com/moses-palmer/pynput) for simulating **Key Presses** but it lacks proper [support for Wayland](https://github.com/moses-palmer/pynput/issues/189). Generally your results will be good when using X (Ubuntu/Linux Mint). [This thread](https://github.com/timothycrosley/streamdeck-ui/issues/47) may be useful.
+* Streamdeck uses [evdev](https://python-evdev.readthedocs.io/) with `uinput` for simulating **Key Presses** and **Write Text**. If these actions do not work, verify your `uinput` permissions and udev setup from the installation guides.
 * **Key Press** or **Write Text** does not work on Fedora (outside of the streamdeck itself), which is not particularly useful. However, still do a lot with the **Command** feature.
 * Some users have reported that the Stream Deck device does not work on all on specific USB ports, as it draws quite a bit of power and/or has [strict bandwidth requirements](https://github.com/timothycrosley/streamdeck-ui/issues/69#issuecomment-715887397). Try a different port.
 * If you are executing a shell script from the Command feature - remember to add the shebang at the top of your file, for the language in question. `#!/bin/bash` or `#!/usr/bin/python3` etc. The streamdeck may appear to lock up if you don't under some distros.

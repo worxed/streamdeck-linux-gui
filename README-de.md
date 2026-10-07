@@ -37,7 +37,7 @@ Die Kommunikation mit dem Streamdeck erfolgt durch die [Python Elgato Stream Dec
 
 ## Linux Schnellstart
 
-**Python 3.8** wird benötigt. Sie können die Version, die sie installiert haben, überprüfen mit `python3 --version`.
+**Python 3.10** wird benötigt. Sie können die Version, die sie installiert haben, überprüfen mit `python3 --version`.
 
 ### Vorgefertigte Skripte
 
@@ -165,10 +165,10 @@ bash -c "wmctrl -a firefox  && xdotool key alt+1"
 
 Simuliert Tasten-Kombinationen (hot keys). Grundsätzlich werden Tasten, die gleichzeitig betätigt werden, mit einem `+` Zeichen verbunden. Trennen sie Tasten-Kombinationen mit einem `,` , wenn zusätzliche Kombinationen benötigt werden. Die Zeichenfolge `alt+F4,f` zum Beispiel bedeutet drücke und halte `alt`, gefolgt von `F4` und lass dann beide los. Drücke anschließend `f` und lass es wieder los.
 
-Sie können auch einen Tasten-Code im hex Format verwenden, `0x74` ist zum Beispiel der Tasten-Code für `t`. Dieser Wert wird auch manchmal als keysym bezeichnet.
+Verwenden sie Tasten-Namen direkt (zum Beispiel `t`, `capslock` oder `numpad_divide`).
+Hex-Keysyms aus Tools wie `xev` (zum Beispiel `0x74`, `0xffe5`, `0xffaf`) werden vom `evdev` Backend nicht unterstützt.
 
-> Sie können das tool `xev` verwenden um den Key-Code einer Taste zu ermitteln.
-> Suchen sie in der Ausgabe nach **keysym hex value**, zum Beispiel `(keysym 0x74, t)`
+> Sie können das Tool `evtest` verwenden, um das Verhalten einer Taste zu prüfen und auf einen `evdev` Tasten-Namen zuzuordnen.
 >
 > Verwenden sie `comma` oder `plus`, wenn sie ein `,` oder ein `+` *ausgeben* wollen.
 >
@@ -186,11 +186,11 @@ Sie können auch einen Tasten-Code im hex Format verwenden, `0x74` ist zum Beisp
 * `1,delay,delay,2,delay,delay,3` - tippe 123 mit 1-Sekunden Pausen zwischen den Tastendrucken (unter Verwendung der Standardpausen).
 * `1,delay 1,2,delay 1,3` - tippe 123 mit 1-Sekunden Pausen zwischen den Tastendrucken (unter Verwendung selbst definierter Pausen).
 * `e,c,h,o,space,",t,e,s,t,",enter` - tippe `echo "test"` und drücke Enter.
-* `ctrl+alt+0x74` - öffnet ein neues Terminalfenster. `0x74` ist der Tasten-Code von `t`. TIP: Verwenden sie den Tasten-Code, wenn der Buchstabe nicht funktioniert.
-* `0xffe5` - Caps Lock umschalten.
-* `0xffaf` - Die `/` Taste im Ziffernblock der Tastatur.
+* `ctrl+alt+t` - öffnet in vielen Desktop-Umgebungen ein neues Terminalfenster.
+* `capslock` - Caps Lock umschalten.
+* `numpad_divide` - Die `/` Taste im Ziffernblock der Tastatur.
 
-Die Standardliste der Tasten finden sie [im source-code](https://pynput.readthedocs.io/en/latest/_modules/pynput/keyboard/_base.html#Key).
+Die unterstützten Tasten-Namen stammen aus den `evdev` Tasten plus Aliasen in `streamdeck_ui/modules/keyboard.py`.
 
 Die `super` Taste (Windows-Taste) kann bei einigen Linux-Versionen problematisch sein. Statt der Tastendruck-Funktion können sie dann die Befehls-Funktion wie folgt benutzen. In diesem Beispiel wollen wir die `Super` Taste und `4` drücken, was die Anwendung Nummer 4 ihrer Favoriten startet (Ubuntu).
 
@@ -217,7 +217,7 @@ Joe
 
 Stellen sie sicher, dass sie die neueste Version verwenden mit `pip3 show streamdeck-ui`. Vergleichen sie es mit: [![PyPI version](https://badge.fury.io/py/streamdeck-ui.svg)](http://badge.fury.io/py/streamdeck-ui)
 
-* Streamdeck verwendet [pynput](https://github.com/moses-palmer/pynput) zur Simulation derf **Tasten-Betätigungen** wodurch ordentliche [Unterstützung für Wayland](https://github.com/moses-palmer/pynput/issues/189) fehlt. Im Allgemeinen werden sie gute Ergebnisse bei Verwendung von X haben (Ubuntu/Linux Mint). [Dieser thread](https://github.com/timothycrosley/streamdeck-ui/issues/47) lönnte nützlich sein.
+* Streamdeck verwendet [evdev](https://python-evdev.readthedocs.io/) mit `uinput` zur Simulation von **Tasten-Betätigungen** und **Text schreiben**. Wenn das nicht funktioniert, prüfen sie die `uinput`-Berechtigungen und die udev-Konfiguration aus den Installationsanleitungen.
 * **Taste drücken** oder **Text schreiben** funktioniert nicht unter Fedora (außerhalb von streamdeck selbst), was nicht besonders hilfreich ist. Die **Befehls-Funktion** kann aber trotzdem eine Menge.
 * Version [1.0.2](https://pypi.org/project/streamdeck-ui/) hat keine Fehler-Behandlung bei der **Befehls-** und der **Taste drücken** Funktion. Deshalb müssen sie vorsichtig sein - ein ungültiger Befehl oder Tastendruck stoppt auch alle anderen Prozesse. Bitte upgraden sie zur neuesten Version.
 * Einige Anwender haben berichtet, dass das Stream Deck Gerätnicht an allen USB-ports funktioniert, da es einiges an Strom verbraucht und/oder [strenge Bandbreitenanforderungen](https://github.com/timothycrosley/streamdeck-ui/issues/69#issuecomment-715887397) hat. Versuchen sie einen anderen Anschluß.

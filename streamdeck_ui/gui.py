@@ -1,11 +1,12 @@
 """Defines the QT powered interface for configuring Stream Decks"""
+
 import os
 import shlex
 import signal
 import sys
 from functools import partial
 from subprocess import Popen  # nosec - Need to allow users to specify arbitrary commands
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, cast
 
 from importlib_metadata import PackageNotFoundError, version
 from PySide6.QtCore import QMimeData, QSettings, QSignalBlocker, QSize, Qt, QTimer, QUrl
@@ -54,7 +55,7 @@ from streamdeck_ui.ui_settings import Ui_SettingsDialog
 # and be able to test
 api: StreamDeckServer = StreamDeckServer()
 
-main_window: "MainWindow"
+main_window: "MainWindow" = cast("MainWindow", None)
 "Reference to the main window, used across multiple functions"
 
 last_image_dir: str = ""
@@ -562,9 +563,6 @@ def build_button_state_pages():
 
 
 def build_button_state_form(tab) -> None:
-    global selected_button
-    global main_window
-
     if hasattr(tab, "button_form"):
         for widget in tab.findChildren(QWidget):
             widget.hide()
@@ -937,7 +935,9 @@ def build_buttons(ui, tab) -> None:
     #  and all the other buttons
     for button in buttons:
         button.clicked.connect(
-            lambda current_button=button, all_buttons=buttons: button_clicked(current_button, all_buttons)
+            lambda checked=False, current_button=button, all_buttons=buttons: button_clicked(
+                current_button, all_buttons
+            )
         )
 
 
@@ -1076,7 +1076,7 @@ class MainWindow(QMainWindow):
         description = "A Linux compatible UI for the Elgato Stream Deck."
         app = QApplication.instance()
         body = [description, "Version {}\n".format(app.applicationVersion())]
-        dependencies = ("streamdeck", "pyside6", "pillow", "pynput")
+        dependencies = ("streamdeck", "pyside6", "pillow", "evdev")
         for dep in dependencies:
             try:
                 dist_version = version(dep)
@@ -1349,7 +1349,6 @@ def sigterm_handler(app, cli, signal_value, frame):
 
 
 def start(_exit: bool = False) -> None:
-    global api
     global main_window
     show_ui = True
     if "-h" in sys.argv or "--help" in sys.argv:

@@ -1,0 +1,8 @@
+project:
+  id: ""
+security:
+  ignore-unpinned-requirements: true
+  ignore-cvss-severity-below: 0
+  ignore-cvss-unknown-severity: false
+  continue-on-vulnerability-error: false
+  ignore-vulnerabilities: {}

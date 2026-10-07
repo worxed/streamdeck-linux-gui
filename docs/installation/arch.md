@@ -7,7 +7,7 @@ This has been tested on:
 * Arch with Gnome (Per every release, thanks to dhtseany)
 * Arch with Sway ans wayland
 
-## AUR 
+## AUR
 
 On Arch Linux, its recommended installing from AUR repositorues. there are two AUR packages available:
 
@@ -48,6 +48,8 @@ sh -c "echo -e 'SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"0fd9\", ATTRS{idProduct}=
 'SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"0fd9\", ATTRS{idProduct}==\"006c\", TAG+=\"uaccess\"\\n'\
 'SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"0fd9\", ATTRS{idProduct}==\"006d\", TAG+=\"uaccess\"\\n'\
 'SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"0fd9\", ATTRS{idProduct}==\"0080\", TAG+=\"uaccess\"\\n'\
+'SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"0fd9\", ATTRS{idProduct}==\"0084\", TAG+=\"uaccess\"\\n'\
+'SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"0fd9\", ATTRS{idProduct}==\"008f\", TAG+=\"uaccess\"\\n'\
 'KERNEL==\"uinput\", SUBSYSTEM==\"misc\", OPTIONS+=\"static_node=uinput\", TAG+=\"uaccess\", GROUP=\"input\", MODE=\"0660\"' > /etc/udev/rules.d/60-streamdeck.rules"
 ```
 
@@ -73,10 +75,9 @@ pipx install  streamdeck-linux-gui
 
 #### From Source
 
-Please make sure you have followed [Install dependencies](#install-dependencies) and [Configure access to Elgato devices](#configure-access-to-elgato-devices) before continuing.
+Please make sure you have followed [Install dependencies](#install-dependencies) and [Configure access to Elgato devices](#configure-access-to-elgato-devices-udev-rules) before continuing.
 
 The steps to install from source can be found [here](source.md)
-
 
 ## Launch the Streamdeck UI
 
